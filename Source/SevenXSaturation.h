@@ -2,30 +2,36 @@
 #include <JuceHeader.h>
 
 /**
- * SevenXSaturation - Algoritmo otimizado para Vocais.
- * Adiciona harmônicos quentes e controla os picos de forma suave.
+ * SevenXSaturation PRO
+ * Saturação otimizada para vocais (estilo válvula analógica)
  */
+
 class SevenXSaturation
 {
 public:
-    /**
-     * Processa a amostra de áudio com uma saturação suave.
-     * @param entrada A amostra original.
-     * @param estaAtivo Se o efeito deve ser aplicado.
-     * @return A amostra processada.
-     */
-    static float processSample (float entrada, bool estaAtivo)
-    {
-        if (!estaAtivo)
-            return entrada;
 
-        // Otimização para Voz: Saturação assimétrica.
-        // Isso imita o comportamento de válvulas, que soam muito bem em vozes.
-        float x = entrada * 1.3f; // Aumentamos um pouco o 'drive' interno
-        
-        if (x > 0.0f)
-            return std::tanh(x); // Compressão suave para picos positivos
+    static float processSample(float input, bool active, float drive = 1.4f, float mix = 1.0f)
+    {
+        if (!active)
+            return input;
+
+        float dry = input;
+
+        // Drive interno
+        float x = input * drive;
+
+        // Saturação assimétrica estilo válvula
+        float saturated;
+
+        if (x >= 0.0f)
+            saturated = std::tanh(x);
         else
-            return std::tanh(x * 0.9f); // Curva levemente diferente para os picos negativos
+            saturated = std::tanh(x * 0.85f);
+
+        // Normalização leve
+        saturated *= 0.9f;
+
+        // Mix Dry/Wet
+        return (dry * (1.0f - mix)) + (saturated * mix);
     }
 };

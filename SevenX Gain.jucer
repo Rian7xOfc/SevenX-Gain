@@ -5,6 +5,8 @@
               companyCopyright="SevenX" version="1">
   <MAINGROUP id="BxvpUP" name="SevenX Gain">
     <GROUP id="{CDB2B775-DCCA-732C-69B0-A034F1F69B8B}" name="Source">
+      <FILE id="ngMtG5" name="SevenXSaturation.h" compile="0" resource="0"
+            file="Source/SevenXSaturation.h"/>
       <FILE id="iFL9ND" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="wxxFYO" name="PluginProcessor.h" compile="0" resource="0"
