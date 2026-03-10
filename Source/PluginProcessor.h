@@ -37,19 +37,18 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    // Função para o Editor ler o nível atual do som para o VU Meter
+    // Métodos para o Editor acessar os dados
     float getRMSLevel (int channel) const {
         return (channel == 0) ? rmsLevelLeft.load() : rmsLevelRight.load();
     }
 
-private:
-    // Parâmetros do Plugin (Onde o erro estava acontecendo)
+    // Ponteiros para os parâmetros (o Editor precisará deles)
     juce::AudioParameterFloat* gainParam;
     juce::AudioParameterBool* bypassParam;
     juce::AudioParameterBool* satParam;
-    juce::AudioParameterBool* modeParam; // <--- AQUI ESTAVA FALTANDO!
+    juce::AudioParameterBool* modeParam;
 
-    // Variáveis para o Medidor VU
+private:
     std::atomic<float> rmsLevelLeft { 0.0f };
     std::atomic<float> rmsLevelRight { 0.0f };
 
