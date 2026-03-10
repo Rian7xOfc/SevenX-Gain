@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SevenXSaturation.h"
 
 class SevenXGainAudioProcessor  : public juce::AudioProcessor
 {
@@ -36,9 +37,19 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    // Função para o Editor ler o nível atual do som
+    float getRMSLevel (int channel) const {
+        return (channel == 0) ? rmsLevelLeft.load() : rmsLevelRight.load();
+    }
+
 private:
-    // ESTA LINHA RESOLVE O ERRO C2065
     juce::AudioParameterFloat* gainParam;
+    juce::AudioParameterBool* bypassParam;
+    juce::AudioParameterBool* satParam;
+
+    // Variáveis atômicas para medir o volume (seguras para thread de áudio)
+    std::atomic<float> rmsLevelLeft { 0.0f };
+    std::atomic<float> rmsLevelRight { 0.0f };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SevenXGainAudioProcessor)
 };
