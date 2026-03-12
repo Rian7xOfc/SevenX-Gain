@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "SevenXSVGKnob.h" // Inclui a classe do Knob customizado
 
 class SevenXEditor : public juce::AudioProcessorEditor, 
                      public juce::Slider::Listener, 
@@ -24,7 +25,12 @@ private:
 
     SevenXGainAudioProcessor& audioProcessor;
 
-    juce::Slider ganhoSlider;
+    // Instância do nosso LookAndFeel customizado
+    SevenXSVGKnob customLookAndFeel;
+
+    juce::Slider inputGainSlider;
+    juce::Slider outputGainSlider;
+    
     juce::TextButton bypassButton;
     juce::TextButton satButton;
     juce::TextButton modeButton;
